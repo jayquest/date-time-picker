@@ -192,6 +192,10 @@ export class DateTimePickerComponent implements OnInit, OnDestroy, ControlValueA
         this._max = this.parseToDate(val);
     }
 
+    get maxDate():Date {
+        return this._max;
+    }
+
     /**
      * The maximum selectable date time
      * @default null
@@ -205,6 +209,10 @@ export class DateTimePickerComponent implements OnInit, OnDestroy, ControlValueA
 
     set min( val: Date | string ) {
         this._min = this.parseToDate(val);
+    }
+
+    get minDate(): Date {
+        return this._min;
     }
 
     /**
@@ -963,11 +971,11 @@ export class DateTimePickerComponent implements OnInit, OnDestroy, ControlValueA
         }
 
         if (isValid && this.min) {
-            isValid = isValid && !isBefore(date, startOfDay(this.min));
+            isValid = isValid && !isBefore(date, startOfDay(this.minDate));
         }
 
         if (isValid && this.max) {
-            isValid = isValid && !isAfter(date, startOfDay(this.max));
+            isValid = isValid && !isAfter(date, startOfDay(this.maxDate));
         }
         return isValid;
     }
@@ -1181,7 +1189,7 @@ export class DateTimePickerComponent implements OnInit, OnDestroy, ControlValueA
 
         let parsedVal;
         if (typeof val === 'string') {
-            parsedVal = parse(val);
+            parsedVal = parse(val, this.dateFormat, this.now);
         } else {
             parsedVal = val;
         }
@@ -1695,11 +1703,11 @@ export class DateTimePickerComponent implements OnInit, OnDestroy, ControlValueA
         }
 
         if (isValid && this.min) {
-            isValid = isValid && !isBefore(value, this.min);
+            isValid = isValid && !isBefore(value, this.minDate);
         }
 
         if (isValid && this.max) {
-            isValid = isValid && !isAfter(value, this.max);
+            isValid = isValid && !isAfter(value, this.maxDate);
         }
 
         return isValid;
